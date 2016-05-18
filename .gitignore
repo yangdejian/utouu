@@ -1,0 +1,13 @@
+## 这些后缀的不要：
+*.dll
+*.docx
+
+## 这些文件夹不要：
+log/
+obj/
+Properties/
+govments/
+sqlite3/
+
+## 特殊文件夹下的后缀文件：
+FlowRobot/*.txt

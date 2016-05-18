@@ -7,7 +7,6 @@
 ## 这些文件夹不要：
 log/
 obj/
-Properties/
 govments/
 sqlite3/
 bin/Debug/

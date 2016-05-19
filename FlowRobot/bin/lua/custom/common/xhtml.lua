@@ -19,54 +19,6 @@ g_sft_jsscript="<script language=\"javascript\" type=\"text/javascript\">\r\n"..
 "document.body.appendChild(el);\r\n"..
 "</script>"
 
-function _xhtml:new(oo)
-	 local o = oo or {}
-	setmetatable(o,self)
-	self.__index=_xhtml
-	return o
-end
-
-function xhtml(doc)
-	local ret = _xhtml:new()
-	if(doc == nil) then
-	    ret.doc = http.HtmlDocument()
-	else
-		ret.doc = doc
-	end
-
-	return ret
-end
-
-function _xhtml:load(html)
-	if(html==nil or html=="") then
-		return false
-	end
-	html=string.gsub(string.gsub(html,"window.location","//window.location"),"window.open","//window.open")
-	html=tostring(g_bf_jsscript..html..g_sft_jsscript)
-	return self.doc:Load(html)
-end
-
-function _xhtml:get(path,attr)
-	local ele=self.doc:SelectOneElement(path)
-	if(not(ele:IsValid())) then
-		print("未找到"..path)
-		return nil
-	end
-	local ret=tostring(ele:GetAttribute(attr))
-	return string.gsub(tostring(ret), "^%s*(.-)%s*$", "%1")--trim
-end
-
-function _xhtml:getElements(path)
-	local eles=self.doc:SelectElements(path)
-	return eles
-end
-
-
-function _xhtml:gets(path)
-	local nodes=__h_node_s:new(self.doc:SelectElements(path)) --创建新节点
-	return nodes
-end
-
 
 __h_node_s={node=nil}
 function __h_node_s:new(_xnode,oo)
@@ -153,9 +105,59 @@ function __h_node:gets(path)
 end
 
 
+function _xhtml:new(oo)
+	 local o = oo or {}
+	setmetatable(o,self)
+	self.__index=_xhtml
+	return o
+end
 
+function xhtml(doc)
+	local ret = _xhtml:new()
+	if(doc == nil) then
+	    ret.doc = http.HtmlDocument()
+	else
+		ret.doc = doc
+	end
 
+	return ret
+end
 
+function _xhtml:load(html)
+	if(html==nil or html=="") then
+		return false
+	end
+	html=string.gsub(string.gsub(html,"window.location","//window.location"),"window.open","//window.open")
+	html=tostring(g_bf_jsscript..html..g_sft_jsscript)
+	return self.doc:Load(html)
+end
+
+function _xhtml:get(path,attr)
+	local ele=self.doc:SelectOneElement(path)
+	if(not(ele:IsValid())) then
+		print("未找到"..path)
+		return nil
+	end
+	local ret=tostring(ele:GetAttribute(attr))
+	return string.gsub(tostring(ret), "^%s*(.-)%s*$", "%1")--trim
+end
+
+function _xhtml:getElements(path)
+	local v=doc==nil and self.doc or doc
+	local eles=v:SelectElements(path)
+	return eles
+end
+
+function _xhtml:getElement(path)
+	local v=doc==nil and self.doc or doc
+	local eles=v:SelectOneElement(path)
+	return eles
+end
+
+function _xhtml:gets(path)
+	local nodes=__h_node_s:new(self.doc:SelectElements(path)) --创建新节点
+	return nodes
+end
 
 function _xhtml:set(path,attr,value)
 	local ele=self.doc:SelectOneElement(path)

@@ -9,7 +9,7 @@ end
 
 function send_distrb_command()
 	local queues = xmq("analyze_distrb")
-	local send_msg = xtable.parse('{"min_bonus":"1","min_profit_rate":"0.02","ft_date":"17","analyze_group_code":"profit_analyze"}')
+	local send_msg = xtable.parse('{"min_bonus":"1","min_profit_rate":"0.02","ft_date":"19","analyze_group_code":"profit_analyze"}')
 	local res = queues:send(send_msg)
 end
 
